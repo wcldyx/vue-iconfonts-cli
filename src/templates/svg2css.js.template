@@ -132,8 +132,9 @@ function svg2css(code, color) {
         //填色
         var cpre = '%23';
         var fill = void 0;
-        if (color && color[i]) {
-            fill = color;
+        var nextColor = Array.isArray(color) ? color[i] : color;
+        if (nextColor) {
+            fill = nextColor;
             fill = fill.replace('#', '%23');
         }
         else {

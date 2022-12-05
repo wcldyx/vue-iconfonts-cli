@@ -9,7 +9,7 @@ export default {
   name: "#componentName#",
   props: {
     size: {
-      type: String,
+      type: [String, Number],
       default: #size#,
     },
     color: {
