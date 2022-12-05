@@ -16,7 +16,7 @@ export default {
       type: [String, Array],
       default: "",
     },
-    style: {
+    inlineStyle: {
       type: String,
       default: "display: block;",
     },
@@ -24,7 +24,7 @@ export default {
   methods: {
     renderSVG:function(){
       const res = svg2css(`#iconContent#`,this.color);
-      return `background-image: url("${res}");width:${this.size}px;height:${this.size}px;${this.style}`;
+      return `background-image: url("${res}");width:${this.size}px;height:${this.size}px;${this.inlineStyle}`;
     }
   },
 };

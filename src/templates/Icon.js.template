@@ -1,5 +1,5 @@
 <template>
-  <component :is="name" :size="size" :color="color" :style="style"></component>
+  <component :is="name" :size="size" :color="color" :inlineStyle="inlineStyle"></component>
 </template>
 <script>
 /* eslint-disable */
@@ -20,7 +20,7 @@ export default {
       type: [String, Array],
       default: "",
     },
-    style: {
+    inlineStyle: {
       type: String,
       default: "display: block;",
     },
