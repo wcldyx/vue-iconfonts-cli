@@ -1,9 +1,7 @@
 <template>
-  <div :style="renderSVG()"></div>
+  #iconContent#
 </template>
 <script>
-import { getIconColor } from "./helper";
-import { svg2css } from "./svg2css";
 
 export default {
   name: "#componentName#",
@@ -16,16 +14,23 @@ export default {
       type: [String, Array],
       default: "",
     },
-    inlineStyle: {
-      type: String,
-      default: "display: block;",
-    },
   },
-  methods: {
-    renderSVG:function(){
-      const res = svg2css(`#iconContent#`,this.color);
-      return `background-image: url("${res}");width:${this.size}px;height:${this.size}px;${this.inlineStyle}`;
-    }
+  created() {
+    this.svgColors = #svgColors#;
+  },
+  computed: {
+    variables() {
+      const currentColors = this.svgColors.map((color, index) => {
+        if (Array.isArray(this.color)) {
+          return this.color[index] || color;
+        }
+        return this.color || color;
+      });
+      return currentColors.reduce((acc, cur, index) => {
+          acc[`--svg-color-${index}`] = cur;
+          return acc;
+        }, {});
+    },
   },
 };
 </script>
