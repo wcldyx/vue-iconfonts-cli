@@ -1,5 +1,5 @@
 <template>
-  #iconContent#
+  <span class="svg-icon">#iconContent#</span>
 </template>
 <script>
 
