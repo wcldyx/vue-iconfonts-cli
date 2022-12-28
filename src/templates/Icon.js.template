@@ -1,10 +1,14 @@
 <template>
-  <component :is="name" :size="size" :color="color" v-bind="$attrs"></component>
+  <component class="svg-icon" v-if="component" :is="component" :size="size" :color="color" v-bind="$attrs"></component>
+  <span class="svg-icon" v-else></span>
 </template>
 <script>
 /* eslint-disable */
 #imports#
 
+const components = {
+    #cases#
+}
 export default {
   name:"iconfont",
   props:{
@@ -21,8 +25,14 @@ export default {
       default: "",
     },
   },
-  components:{
-    #cases#
+  computed: {
+    component(){
+       for (const key in components) {
+        if (key.toLowerCase() === this.name.toLowerCase()) {
+          return components[key];
+        }
+      }
+    }
   },
 }
 </script>
