@@ -1,0 +1,10 @@
+import { DefineComponent } from 'vue'
+
+const IconFont: DefineComponent<{
+  name: #cases#
+  size?: string | number
+  color?: string | string[]
+}>
+
+export default IconFont
+

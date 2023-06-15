@@ -20,6 +20,42 @@ import { whitespace } from './whitespace';
 
 const ATTRIBUTE_FILL_MAP = ['path'];
 
+/**
+ * 比较给定的文本和文件路径中文件的内容是否一致
+ * @param text - 要比较的文本
+ * @param filePath - 要比较的文件路径
+ * @returns 如果文本和文件内容一致，返回true；否则返回false
+ * @example
+ * ```typescript
+ * const text = 'hello world';
+ * const filePath = './test.txt';
+ * fs.writeFileSync(filePath, text, 'utf-8');
+ * const isMatch = compareTextWithFileContent(text, filePath);
+ * console.log(isMatch); // true
+ * ```
+ */
+function compareTextWithFileContent(text: string, filePath: string): boolean {
+  try {
+    // 读取文件内容
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    // 比较文本和文件内容是否一致
+    return text === fileContent;
+  } catch (error) {
+    console.error(`Error reading file: ${error}`);
+    // 如果读取文件失败，返回false
+    return false;
+  }
+}
+
+
+// 生成ts类型提示文件
+export const generateType = (cases: string[], saveDir: string) => {
+  let iconFile = getTemplate('Icon.d.ts');
+  iconFile = replaceCases(iconFile, cases.map((item) => `'${item}'`).join(" | "));
+  fs.writeFileSync(path.join(saveDir, 'index.d.ts'), iconFile);
+}
+
+
 export const generateComponent = (data: XmlData, config: Config) => {
   const imports: string[] = [];
   const saveDir = path.resolve(config.save_dir);
@@ -51,8 +87,11 @@ export const generateComponent = (data: XmlData, config: Config) => {
     singleFile = singleFile.replace(/#svgColors#/g, JSON.stringify(Array.from(svgColors)));
     singleFile = replaceSizeUnit(singleFile, config.unit);
 
-    fs.writeFileSync(path.join(saveDir, componentName + '.vue'), singleFile);
-
+    const filePath = path.join(saveDir, componentName + '.vue');
+    if (compareTextWithFileContent(singleFile, filePath)) {
+      return;
+    }
+    fs.writeFileSync(filePath, singleFile);
     console.log(`${colors.green('√')} Generated icon "${colors.yellow(iconId)}"`);
   });
 
@@ -63,7 +102,9 @@ export const generateComponent = (data: XmlData, config: Config) => {
   iconFile = replaceImports(iconFile, imports);
   iconFile = replaceExports(iconFile, imports);
 
-  fs.writeFileSync(path.join(saveDir, 'Index.vue'), iconFile);
+  fs.writeFileSync(path.join(saveDir, 'index.js'), iconFile);
+
+  generateType(cases, saveDir);
 
   console.log(`\n${colors.green('√')} All icons have putted into dir: ${colors.green(config.save_dir)}\n`);
 };
@@ -96,10 +137,10 @@ const generateCase = (data: XmlData['svg']['symbol'][number], baseIdent: number)
   }
 
   template += `${whitespace(baseIdent)}</svg>`;
-
+  // 判断颜色是否是同一种颜色
   return {
     template,
-    svgColors: counter.svgColors,
+    svgColors: counter.svgColors.size === 1 ? new Set<string>(["currentColor"]) : counter.svgColors,
   };
 };
 
