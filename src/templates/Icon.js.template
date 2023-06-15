@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { h } from 'vue';
 #imports#
 
 const components = {
@@ -29,9 +30,9 @@ export default {
       }
     }
   },
-  render: function (createElement) {
+  render: function () {
     if (this.component) {
-      return createElement(
+      return h(
         this.component,
         {
           class: 'svg-icon',
@@ -43,7 +44,7 @@ export default {
         }
       );
     } else {
-      return createElement(
+      return h(
         'span',
         {
           class: 'svg-icon',
