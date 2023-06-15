@@ -3,5 +3,7 @@
   "save_dir": "./src/components/iconfont",
   "trim_icon_prefix": "icon",
   "unit": "px",
-  "default_icon_size": 18
+  "default_icon_size": 18,
+  "pxtorem": false,
+  "rootValue": 37.5
 }

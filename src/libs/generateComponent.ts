@@ -85,6 +85,8 @@ export const generateComponent = (data: XmlData, config: Config) => {
     const { svgColors, template } = generateCase(item, 4);
     singleFile = replaceSingleIconContent(singleFile, template);
     singleFile = singleFile.replace(/#svgColors#/g, JSON.stringify(Array.from(svgColors)));
+    singleFile = singleFile.replace(/#pxtorem#/g, config.pxtorem ? 'true' : 'false');
+    singleFile = singleFile.replace(/#rootValue#/g, config.rootValue.toString());
     singleFile = replaceSizeUnit(singleFile, config.unit);
 
     const filePath = path.join(saveDir, componentName + '.vue');
@@ -110,7 +112,7 @@ export const generateComponent = (data: XmlData, config: Config) => {
 };
 
 const generateCase = (data: XmlData['svg']['symbol'][number], baseIdent: number) => {
-  let template = `${whitespace(baseIdent)}<svg viewBox="${data.$.viewBox}" :width="size" :height="size" :style="variables" v-bind="$attrs">\n`;
+  let template = `${whitespace(baseIdent)}<svg viewBox="${data.$.viewBox}" :width="viewSize" :height="viewSize" :style="styles" v-bind="$attrs">\n`;
 
   const counter = {
     baseIdent,

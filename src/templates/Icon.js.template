@@ -36,11 +36,8 @@ export default {
         this.component,
         {
           class: 'svg-icon',
-          props: {
-            size: this.size,
-            color: this.color,
-          },
-          attrs: this.$attrs,
+          ...this.$attrs,
+          ...this.$props,
         }
       );
     } else {

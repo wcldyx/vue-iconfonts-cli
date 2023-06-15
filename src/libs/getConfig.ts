@@ -9,6 +9,8 @@ export interface Config {
   trim_icon_prefix: string;
   unit: string;
   default_icon_size: number;
+  pxtorem: boolean;
+  rootValue: number;
 }
 
 let cacheConfig: Config;

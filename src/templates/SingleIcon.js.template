@@ -14,22 +14,40 @@ export default {
       type: [String, Array],
       default: "",
     },
+    pxtorem: {
+      type: Boolean,
+      default: #pxtorem#,
+    },
+    rootValue: {
+      type: Number,
+      default: #rootValue#,
+    },
   },
   created() {
     this.svgColors = #svgColors#;
   },
   computed: {
-    variables() {
+    viewSize() {
+      if (this.pxtorem) {
+        return `1em`;
+      }
+      return `${this.size}`;
+    },
+    styles () {
       const currentColors = this.svgColors.map((color, index) => {
         if (Array.isArray(this.color)) {
           return this.color[index] || color;
         }
         return this.color || color;
       });
-      return currentColors.reduce((acc, cur, index) => {
+      const variables = currentColors.reduce((acc, cur, index) => {
           acc[`--svg-color-${index}`] = cur;
           return acc;
         }, {});
+      return {
+        ...variables,
+        fontSize: this.pxtorem ?  `${this.size / this.rootValue}rem` : '',
+      };
     },
   },
 };
